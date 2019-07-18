@@ -8,7 +8,7 @@ This python package is an extension to OpenAI Gym for auxiliary tasks (multitask
 
 - [Python 3.5.2](https://www.python.org/) and [Python 3.6.x](https://www.python.org/)
 - [OpenAI Gym](https://gym.openai.com/)
-- [MuJoCo](http://mujoco.org/) (Optional)=> MuJoCo200 is compatible.
+- [MuJoCo](http://mujoco.org/) (Optional)
 - [mujoco-py](https://github.com/openai/mujoco-py#install-mujoco) (Optional)
 - [roboschool](https://github.com/openai/roboschool) (Optional)
 
@@ -35,6 +35,11 @@ at `~/.mujoco/mjkey.txt`
 ```bash
 pip3 install -e .[mujoco]
 ```
+
+#### MuJoCo Env naming Rule
+Please check the official [[mujoco_py]](https://github.com/openai/mujoco-py)
+- `env_name-v0`: MuJoCo version < 2.0
+- `env_name-v1`: MuJoCo version == 2.0
 
 ### Test Installation
 You have two ways to test it. 
@@ -84,7 +89,8 @@ env = gym.make("State-Based-Navigation-2d-Map1-Goal1-v0")
 import gym
 from gym_extensions.continuous import mujoco
 
-env = gym.make("HopperGravityHalf-v0")
+# env = gym.make("HopperGravityHalf-v0") # MuJoCo before ver2.0
+env = gym.make("HopperGravityHalf-v1") # MuJoCo ver2.0
 
 env.reset()
 for _ in range(1000):

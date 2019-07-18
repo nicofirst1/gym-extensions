@@ -1,7 +1,7 @@
 import gym
 from gym_extensions.continuous import mujoco
 
-env = gym.make("HopperBigThigh-v0")
+env = gym.make("HopperBigThigh-v1")
 
 env.reset()
 for _ in range(100):
