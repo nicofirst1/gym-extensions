@@ -6,9 +6,9 @@ This python package is an extension to OpenAI Gym for auxiliary tasks (multitask
 
 ## Dependencies
 
-- [Python 3.5.2](https://www.python.org/)
+- [Python 3.5.2](https://www.python.org/) and [Python 3.6.x](https://www.python.org/)
 - [OpenAI Gym](https://gym.openai.com/)
-- [MuJoCo](http://mujoco.org/) (Optional)
+- [MuJoCo](http://mujoco.org/) (Optional)=> MuJoCo200 is compatible.
 - [mujoco-py](https://github.com/openai/mujoco-py#install-mujoco) (Optional)
 - [roboschool](https://github.com/openai/roboschool) (Optional)
 
@@ -37,8 +37,14 @@ pip3 install -e .[mujoco]
 ```
 
 ### Test Installation
+You have two ways to test it. 
 ```
-nosetests -v gym_extensions
+# 1.
+$ nosetests -v gym_extensions
+
+# 2. MuJoCo test
+$ cd tests
+$ python simple_test.py
 ```
 
 ### Possible Issues
@@ -75,8 +81,16 @@ env = gym.make("State-Based-Navigation-2d-Map1-Goal1-v0")
 ```
 
 ```python
+import gym
 from gym_extensions.continuous import mujoco
-env = gym.make("HopperWall-v0")
+
+env = gym.make("HopperGravityHalf-v0")
+
+env.reset()
+for _ in range(1000):
+    env.render()
+    env.step(env.action_space.sample()) # take a random action
+env.close()
 ```
 
 

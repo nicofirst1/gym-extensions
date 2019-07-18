@@ -1,15 +1,13 @@
+import os
+import gym
 import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
-import os.path as osp
 from gym_extensions.continuous.mujoco.wall_envs import WallEnvFactory
 from gym_extensions.continuous.mujoco.gravity_envs import GravityEnvFactory
 from gym.envs.mujoco.humanoid import HumanoidEnv, mass_center
 from gym.envs.mujoco.humanoidstandup import HumanoidStandupEnv
 from gym_extensions.continuous.mujoco.perturbed_bodypart_env import ModifiedSizeEnvFactory
-
-import os
-import gym
 
 HumanoidWallEnv = lambda *args, **kwargs : WallEnvFactory(ModifiedHumanoidEnv)(model_path=os.path.dirname(gym.envs.mujoco.__file__) + "/assets/humanoid.xml", ori_ind=-1, *args, **kwargs)
 
@@ -75,18 +73,18 @@ class HumanoidStandupAndRunEnv(HumanoidEnv, utils.EzPickle):
         mujoco_env.MujocoEnv.__init__(self, model_path, 5)
         utils.EzPickle.__init__(self)
 
-    def _step(self, a):
-        pos_before = mass_center(self.model)
+    def step(self, a):
+        pos_before = mass_center(self.model, self.sim)
         self.do_simulation(a, self.frame_skip)
-        pos_after = mass_center(self.model)
+        pos_after = mass_center(self.model, self.sim)
 
-        pos_after_standup =  self.model.data.qpos[2][0]
+        pos_after_standup = self.sim.data.qpos[2]
 
-        down = bool(( self.model.data.qpos[2] < 1.0) or ( self.model.data.qpos[2] > 2.0))
+        down = bool((pos_after_standup < 1.0) or (pos_after_standup > 2.0))
 
         alive_bonus = 5.0 if not down else 1.0
 
-        data = self.model.data
+        data = self.sim.data
 
         uph_cost = (pos_after_standup - 0) / self.model.opt.timestep
         lin_vel_cost = 0.25 * (pos_after - pos_before) / self.model.opt.timestep
@@ -96,8 +94,6 @@ class HumanoidStandupAndRunEnv(HumanoidEnv, utils.EzPickle):
         quad_impact_cost = min(quad_impact_cost, 10)
 
         reward = lin_vel_cost + uph_cost - quad_ctrl_cost - quad_impact_cost + alive_bonus
-        qpos = self.model.data.qpos
-
         done = bool(False)
         return self._get_obs(), reward, done, dict(reward_linup=uph_cost, reward_quadctrl=-quad_ctrl_cost, reward_impact=-quad_impact_cost, reward_alive=alive_bonus)
 
