@@ -7,6 +7,7 @@ This can be good reference to modify some attributes in `mujoco_py`
 https://gist.github.com/machinaut/9bd1473c763554086c176d39062700b0
 """
 
+
 def GravityEnvFactory(class_type):
     """class_type should be an OpenAI gym type"""
 
@@ -14,6 +15,7 @@ def GravityEnvFactory(class_type):
         """
         Allows the gravity to be changed by the
         """
+
         def __init__(
                 self,
                 model_path,
@@ -28,6 +30,6 @@ def GravityEnvFactory(class_type):
 
             self.model.opt.gravity[0] = 0.
             self.model.opt.gravity[1] = 0.
-            self.model.opt.gravity[2] = gravity*3
+            self.model.opt.gravity[2] = gravity * 3
 
     return GravityEnv

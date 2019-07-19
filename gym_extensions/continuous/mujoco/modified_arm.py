@@ -11,10 +11,12 @@ import gym
 import random
 import six
 
+
 class PusherFullRange(PusherEnv, utils.EzPickle):
     """
     Simply allows changing of XML file, probably not necessary if we pull request the xml name as a kwarg in openai gym
     """
+
     def __init__(self, model_path=os.path.dirname(gym.envs.mujoco.__file__) + "/assets/pusher.xml", **kwargs):
         mujoco_env.MujocoEnv.__init__(self, model_path, 5)
         utils.EzPickle.__init__(self)
@@ -37,8 +39,9 @@ class PusherFullRange(PusherEnv, utils.EzPickle):
     def reset_model(self):
         qpos = self.init_qpos
 
-        goal_pos_map = { 'left' : np.array([-0.05, -1.1230]), 'right' : np.array([0.0, 0.0])}
-        object_start_pos_map = {'left' : np.array([[-0.3, 0.0], [-1.1, -.8]]), 'right' : np.array([[-0.3, 0.0], [-0.2, 0.2]]) }
+        goal_pos_map = {'left': np.array([-0.05, -1.1230]), 'right': np.array([0.0, 0.0])}
+        object_start_pos_map = {'left': np.array([[-0.3, 0.0], [-1.1, -.8]]),
+                                'right': np.array([[-0.3, 0.0], [-0.2, 0.2]])}
         position = random.choice(['left', 'right'])
 
         self.goal_pos = goal_pos_map[position]
@@ -47,15 +50,15 @@ class PusherFullRange(PusherEnv, utils.EzPickle):
         while True:
 
             self.cylinder_pos = np.concatenate([
-                    self.np_random.uniform(low=object_start_range[0][0], high=object_start_range[0][1], size=1),
-                    self.np_random.uniform(low=object_start_range[1][0], high=object_start_range[1][1], size=1)])
+                self.np_random.uniform(low=object_start_range[0][0], high=object_start_range[0][1], size=1),
+                self.np_random.uniform(low=object_start_range[1][0], high=object_start_range[1][1], size=1)])
             if np.linalg.norm(self.cylinder_pos - self.goal_pos) > 0.17:
                 break
 
         qpos[-4:-2] = self.cylinder_pos
         qpos[-2:] = self.goal_pos
         qvel = self.init_qvel + self.np_random.uniform(low=-0.005,
-                high=0.005, size=self.model.nv)
+                                                       high=0.005, size=self.model.nv)
         qvel[-4:] = 0
         self.set_state(qpos, qvel)
         return self._get_obs()
@@ -65,6 +68,7 @@ class PusherLeftSide(PusherEnv, utils.EzPickle):
     """
     Simply allows changing of XML file, probably not necessary if we pull request the xml name as a kwarg in openai gym
     """
+
     def __init__(self, model_path=os.path.dirname(gym.envs.mujoco.__file__) + "/assets/pusher.xml", **kwargs):
         mujoco_env.MujocoEnv.__init__(self, model_path, 5)
         utils.EzPickle.__init__(self)
@@ -90,23 +94,25 @@ class PusherLeftSide(PusherEnv, utils.EzPickle):
 
         while True:
             self.cylinder_pos = np.concatenate([
-                    self.np_random.uniform(low=-0.3, high=0, size=1),
-                    self.np_random.uniform(low=-1.1, high=-.8, size=1)])
+                self.np_random.uniform(low=-0.3, high=0, size=1),
+                self.np_random.uniform(low=-1.1, high=-.8, size=1)])
             if np.linalg.norm(self.cylinder_pos - self.goal_pos) > 0.17:
                 break
 
         qpos[-4:-2] = self.cylinder_pos
         qpos[-2:] = self.goal_pos
         qvel = self.init_qvel + self.np_random.uniform(low=-0.005,
-                high=0.005, size=self.model.nv)
+                                                       high=0.005, size=self.model.nv)
         qvel[-4:] = 0
         self.set_state(qpos, qvel)
         return self._get_obs()
+
 
 class PusherMovingGoalEnv(PusherEnv, utils.EzPickle):
     """
     Simply allows changing of XML file, probably not necessary if we pull request the xml name as a kwarg in openai gym
     """
+
     def __init__(self, model_path=os.path.dirname(gym.envs.mujoco.__file__) + "/assets/pusher.xml", **kwargs):
         mujoco_env.MujocoEnv.__init__(self, model_path, 5)
         utils.EzPickle.__init__(self)
@@ -115,20 +121,20 @@ class PusherMovingGoalEnv(PusherEnv, utils.EzPickle):
         qpos = self.init_qpos
 
         self.goal_pos = np.concatenate([
-                self.np_random.uniform(low=-0.2, high=0, size=1),
-                self.np_random.uniform(low=-0.1, high=0.3, size=1)])
+            self.np_random.uniform(low=-0.2, high=0, size=1),
+            self.np_random.uniform(low=-0.1, high=0.3, size=1)])
 
         while True:
             self.cylinder_pos = np.concatenate([
-                    self.np_random.uniform(low=-0.3, high=0, size=1),
-                    self.np_random.uniform(low=-0.2, high=0.2, size=1)])
+                self.np_random.uniform(low=-0.3, high=0, size=1),
+                self.np_random.uniform(low=-0.2, high=0.2, size=1)])
             if np.linalg.norm(self.cylinder_pos - self.goal_pos) > 0.17:
                 break
 
         qpos[-4:-2] = self.cylinder_pos
         qpos[-2:] = self.goal_pos
         qvel = self.init_qvel + self.np_random.uniform(low=-0.005,
-                high=0.005, size=self.model.nv)
+                                                       high=0.005, size=self.model.nv)
         qvel[-4:] = 0
         self.set_state(qpos, qvel)
         return self._get_obs()
@@ -138,6 +144,7 @@ class StrikerMovingStartStateEnv(StrikerEnv, utils.EzPickle):
     """
     Simply allows changing of XML file, probably not necessary if we pull request the xml name as a kwarg in openai gym
     """
+
     def __init__(self, model_path=os.path.dirname(gym.envs.mujoco.__file__) + "/assets/striker.xml", **kwargs):
         self._striked = False
         self._min_strike_dist = np.inf
@@ -153,13 +160,13 @@ class StrikerMovingStartStateEnv(StrikerEnv, utils.EzPickle):
         qpos = self.init_qpos
 
         self.ball = np.concatenate([
-                self.np_random.uniform(low=0.43, high=0.55, size=1),
-                self.np_random.uniform(low=-0.05, high=-.3, size=1)])
+            self.np_random.uniform(low=0.43, high=0.55, size=1),
+            self.np_random.uniform(low=-0.05, high=-.3, size=1)])
 
         while True:
             self.goal = np.concatenate([
-                    self.np_random.uniform(low=0.15, high=0.7, size=1),
-                    self.np_random.uniform(low=0.1, high=1.0, size=1)])
+                self.np_random.uniform(low=0.15, high=0.7, size=1),
+                self.np_random.uniform(low=0.1, high=1.0, size=1)])
             if np.linalg.norm(self.ball - self.goal) > 0.17:
                 break
 
@@ -169,7 +176,7 @@ class StrikerMovingStartStateEnv(StrikerEnv, utils.EzPickle):
         angle = -np.arctan(diff[0] / (diff[1] + 1e-8))
         qpos[-1] = angle / 3.14
         qvel = self.init_qvel + self.np_random.uniform(low=-.1, high=.1,
-                size=self.model.nv)
+                                                       size=self.model.nv)
         qvel[7:] = 0
         self.set_state(qpos, qvel)
         return self._get_obs()

@@ -5,7 +5,6 @@ import random
 from gym import utils
 import pyrr
 import math
-import six
 
 
 def isclose(a, b, rel_tol=1e-04, abs_tol=0.0):
@@ -140,7 +139,7 @@ def WallEnvFactory(class_type):
 
             for ray_idx in range(self._n_bins):
                 theta = (
-                                    self._sensor_span / self._n_bins) * ray_idx - self._sensor_span / 2.  # self._sensor_span * 0.5 + 1.0 * (2 * ray_idx + 1) / (2 * self._n_bins) * self._sensor_span
+                                self._sensor_span / self._n_bins) * ray_idx - self._sensor_span / 2.  # self._sensor_span * 0.5 + 1.0 * (2 * ray_idx + 1) / (2 * self._n_bins) * self._sensor_span
                 forward_normal = rotate_vector(np.array([1, 0, 0]), [0, 1, 0], theta)
                 # Note: Mujoco quaternions use [w, x, y, z] convention
                 quat_mujoco = self.get_body_xquat("torso")
