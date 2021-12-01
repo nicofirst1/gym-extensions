@@ -19,7 +19,6 @@ setup(name='gym_extensions',
       install_requires=read_requirements_file('requirements.txt'),
       # mujoco just released 1.5, for now stick with 1.3
       #extras_requires={'mujoco':'mujoco-py<1.50.2,>=1.50.1'},
-      extras_requires={'mujoco':'mujoco-py<1.50,>=0.5'},
       description='Extensions to OpenAI Gym for multitask learning, inverse reinforcement learning, and other peripheral tasks.',
       #author='Peter Henderson',
       url='https://github.com/Breakend/gym-extensions',

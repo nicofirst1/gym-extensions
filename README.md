@@ -19,6 +19,18 @@ Check out the latest code:
 git clone https://github.com/Breakend/gym-extensions-multitask.git
 ```
 
+Install swig on linux (use brew for mac)
+```bash
+sudo apt-get install swig
+```
+
+If you're using conda environments the following should help:
+
+```
+conda install gcc_linux-64 
+conda install gxx_linux-64
+```
+
 ### Install without MuJoCo Support
 ```bash
 pip3 install -e .
