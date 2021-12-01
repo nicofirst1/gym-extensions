@@ -78,7 +78,7 @@ class LimitedRangeBasedPOMDPNavigation2DEnv(gym.Env):
             ranges = np.concatenate([ranges, self.destination])
         return ranges
 
-    def _step(self, action):
+    def step(self, action):
         old_state = self.state.copy()
         v = action[0]
         theta = action[1]
@@ -107,7 +107,7 @@ class LimitedRangeBasedPOMDPNavigation2DEnv(gym.Env):
         return self.observation, reward, done, info
 
 
-    def _reset(self):
+    def reset(self):
         self.state = self.init_position
         return self._get_observation(self.state)
 
@@ -166,7 +166,7 @@ class LimitedRangeBasedPOMDPNavigation2DEnv(gym.Env):
             polygon.set_color(1.0, 0., 0.)
             viewer.add_geom(polygon)
 
-    def _render(self, mode='human', close=False):
+    def render(self, mode='human', close=False):
 
         if close:
             if self.viewer is not None:

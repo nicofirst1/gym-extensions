@@ -1,9 +1,12 @@
 import gym
 
+from continuous.gym_navigation_2d import register_custom_envs
 from gym_extensions.continuous.gym_navigation_2d.env_generator import Environment, EnvironmentCollection, Obstacle
 import numpy as np
 import time
 import timeit
+
+register_custom_envs()
 
 env = gym.make('State-Based-Navigation-2d-Map0-Goal2-v0')
 
@@ -20,10 +23,12 @@ for t in range(300):
     dt1.append(end - start)
 
     start = time.time()
-    observation, reward, done, info = env.step(action)
+    observation, reward, done, info = env.step(np.array([1., 1.]))
     end = time.time()
 
     dt2.append(end - start)
+
+    print(observation)
 
 
     if done:

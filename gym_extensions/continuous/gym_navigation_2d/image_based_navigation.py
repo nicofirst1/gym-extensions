@@ -19,6 +19,7 @@ class ImageBasedNavigation2DEnv(StateBasedMDPNavigation2DEnv):
         self.obs_img_shape = (160, 120, 3)
         
         self.observation_space = Box(0., 255., (self.obs_img_shape[1], self.obs_img_shape[0], 3))
+        self._gym_disable_underscore_compat=True
 
     def set_circular_observation(self, img, col_center, row_center, radius, color=(0,0,0)):
         rr,cc = circle(row_center, col_center, radius)

@@ -56,7 +56,10 @@ for i in range(10):
 
 # register each env into 
 def register_custom_envs():
+
+
     for key, value in custom_envs.items():
+
         arg_dict = dict(id=key, 
                         entry_point=value['path'], 
                         max_episode_steps=value['max_episode_steps'], 
@@ -65,4 +68,3 @@ def register_custom_envs():
             arg_dict['reward_threshold'] = value['reward_threshold']
         register(**arg_dict)
 
-register_custom_envs()
